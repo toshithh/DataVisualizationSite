@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    {% load static %}
+    <link href="{% static 'index.css' %}" type="text/css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="{% static 'charts.js' %}"></script>
+    <script>
+        function fetch(){
+            topic = document.getElementById("topic").value;
+            endyear = document.getElementById("endyear").value;
+            sector = document.getElementById("sector").value;
+            country = document.getElementById("country").value;
+            region = document.getElementById("region").value;
+            source = document.getElementById("source").value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                data = String(this.responseText);
+                window.data = $.parseJSON(data);
+                Chart.helpers.each(Chart.instances, function (instance) {
+                    instance.destroy();
+                });
+                propertyGraph("region", "intensity", "intensity");
+                propertyGraph("country", "intensityC", "intensity");
+                propertyGraph("region", "relevance", "relevance");
+                propertyGraph("country", "relevanceC", "relevance");
+                propertyGraph("region", "likelihood", "likelihood");
+                propertyGraph("country", "likelihoodC", "likelihood");
+                CountGraph("start_year", "numProjectStarted");
+                CountGraph("end_year", "numProjectEnded");
+                projectNum("region", "numProjects");
+                projectNum("country", "numProjectsC");
+                }
+            };
+            xhttp.open("GET", "fetch?topic="+encodeURIComponent(topic)+"&endyear="+encodeURIComponent(endyear)+"&sector="+encodeURIComponent(sector)+"&region="+encodeURIComponent(region)+"&source="+encodeURIComponent(source)+"&country="+encodeURIComponent(country), true);
+            xhttp.send();
+        }
+    </script>
+
+    <script>
+        var R = 90;
+        $(document).ready(function(){
+            fetch();
+            $("#submit").click(function(){
+                $("#dashboard").slideUp();
+                $("#toggle").animate({rotate: String(parseInt((R+90)/2))+"deg"});
+                $("html, body").animate({ scrollTop: 0 });
+                R *= -1;
+            });
+            $("#toggle").click(function(){
+                $("#dashboard").slideToggle();
+                $("#toggle").animate({rotate: String(parseInt((R+90)/2))+"deg"});
+                $("html, body").animate({ scrollTop: 0 });
+                R *= -1;
+            });
+            $("#title").click(function(){
+                $("#dashboard").slideToggle();
+                $("#toggle").animate({rotate: String(parseInt((R+90)/2))+"deg"});
+                $("html, body").animate({ scrollTop: 0 });
+                R *= -1;
+            });
+        })
+    </script>
+</head>
+
+
+<body>
+    {% include "dashboard.html" %}
+    
+    <div id="graphs">
+        <div id="intensityWrapper" class="bordered-item">
+            <h2 class="graphtitle">Regional Intensity</h2>
+            <canvas id="intensity"></canvas><br>
+        </div>
+
+        <div id="intensityCwrapper" class="bordered-item">
+            <h2 class="graphtitle">Countrywise Intensity</h2>
+            <canvas id="intensityC"></canvas><br>
+        </div>
+
+
+        <div id="relevanceWrapper" class="bordered-item">
+            <h2 class="graphtitle">Regional Relevance</h2>
+            <canvas id="relevance"></canvas><br>
+        </div>
+
+        <div id="relevanceCwrapper" class="bordered-item">
+            <h2 class="graphtitle">Countrywise Relevance</h2>
+            <canvas id="relevanceC"></canvas><br>
+        </div>
+
+
+        <div id="likelihoodWrapper" class="bordered-item">
+            <h2 class="graphtitle">Regional Likelihood</h2>
+            <canvas id="likelihood"></canvas><br>
+        </div>
+
+        <div id="likelihoodCwrapper" class="bordered-item">
+            <h2 class="graphtitle">Countrywise Likelihood</h2>
+            <canvas id="likelihoodC"></canvas><br>
+        </div>
+
+
+        <div id="numProjectswrapper" class="bordered-item">
+            <h2 class="graphtitle">Number of Projects(Region)</h2>
+            <canvas id="numProjects"></canvas><br>
+        </div>
+
+        <div id="numProjectsCwrapper" class="bordered-item">
+            <h2 class="graphtitle">Number of Projects(Country)</h2>
+            <canvas id="numProjectsC"></canvas><br>
+        </div>
+
+
+        <div id="numProjectStartedwrapper" class="bordered-item">
+            <h2 class="graphtitle">Number of Projects Started</h2>
+            <canvas id="numProjectStarted"></canvas><br>
+        </div>
+
+        <div id="numProjectEndedwrapper" class="bordered-item">
+            <h2 class="graphtitle">Number of Projects Completed</h2>
+            <canvas id="numProjectEnded"></canvas><br>
+        </div>
+
+    </div>
+</body>
+
+</html>

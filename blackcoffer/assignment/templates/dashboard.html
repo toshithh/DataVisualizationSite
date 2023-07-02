@@ -1,0 +1,62 @@
+<header class="header">
+    <h2 id="title">Dashboard</h2>
+    <button id="toggle"><svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 10.5A3.502 3.502 0 0 0 18.355 8H21a1 1 0 1 0 0-2h-2.645a3.502 3.502 0 0 0-6.71 0H3a1 1 0 0 0 0 2h8.645A3.502 3.502 0 0 0 15 10.5zM3 16a1 1 0 1 0 0 2h2.145a3.502 3.502 0 0 0 6.71 0H21a1 1 0 1 0 0-2h-9.145a3.502 3.502 0 0 0-6.71 0H3z" fill="#FFFFFF"></path></g></svg></button>
+</header>
+<div id="dashboard">
+
+    <div id="filters">
+        <div class="grid">
+            <label class="weighted-label">Topic:</label>
+            <input id="topic" type="text" list="topicnames" value="" placeholder="ALL">
+                <datalist id="topicnames">
+                    {% for x in topics %}
+                    <option value="{{ x }}"></option>
+                    {% endfor %}
+                </datalist>
+
+            <label class="weighted-label">End Year:</label>
+            <input id="endyear" type="text" list="endyearnames" value="" placeholder="ALL">
+                <datalist id="endyearnames">
+                    {% for x in endyear %}
+                    <option value="{{ x }}"></option>
+                    {% endfor %}
+                </datalist>
+
+            <label class="weighted-label">Sector:</label>
+            <input id="sector" type="text" list="sectornames" value="" placeholder="ALL">
+                <datalist id="sectornames">
+                    {% for x in sector %}
+                    <option value="{{ x }}"></option>
+                    {% endfor %}
+                </datalist>
+
+            <label class="weighted-label">Region:</label>
+            <input id="region" type="text" list="regionnames" value="" placeholder="ALL">
+                <datalist id="regionnames">
+                    {% for x in region %}
+                    <option value="{{ x }}"></option>
+                    {% endfor %}
+                </datalist>
+
+            <label class="weighted-label">Source:</label>
+            <input id="source" type="text" list="sourcenames" value="" placeholder="ALL">
+                <datalist id="sourcenames">
+                    {% for x in source %}
+                    <option value="{{ x }}"></option>
+                    {% endfor %}
+                </datalist>
+
+            <label class="weighted-label">Country:</label>
+            <input id="country" type="text" list="countrynames" value="" placeholder="ALL">
+                <datalist id="countrynames">
+                    {% for x in country %}
+                    <option value="{{ x }}"></option>
+                    {% endfor %}
+                </datalist>
+
+        </div>
+        <br>
+        <p><input type="checkbox" id="unknown"><label style="float: left; margin-left: 1ch; font-size: 1em; height: 1.5em">Show Unknown</label></p>
+    </div>
+    <center><button id="submit" onclick="fetch()">Submit</button></center>
+</div>
